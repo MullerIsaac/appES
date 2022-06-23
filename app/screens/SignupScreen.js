@@ -4,19 +4,30 @@ import { useState } from 'react';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-import  SocialButton  from '../components/SocialButton'
+import SocialButton from '../components/SocialButton'
 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-export default function SignupScreen () {
+import { auth } from "../config/firebase";
+
+export default function SignupScreen() {
 
     const [email, setEmail] = useState();
-    const [senha, setSenha] = useState();
+    const [password, setPassword] = useState();
 
-    return(
+    async function createUser() {
+        await createUserWithEmailAndPassword(auth, email, password)
+        .then(value => {
+            console.log('cadastrado com sucesso! \n' + value.user.uid);
+        })
+        .catch(error => console.log(error));
+    }
+
+    return (
         <View style={styles.container}>
             <Text style={styles.text}>Crie sua Conta</Text>
 
-            <FormInput 
+            <FormInput
                 labelValue={email}
                 onChangeText={(userEmail) => setEmail(userEmail)}
                 placeholderText="Email"
@@ -25,42 +36,43 @@ export default function SignupScreen () {
                 autoCorrect={false}
             />
 
-            <FormInput 
-                labelValue={senha}
-                onChangeText={(userSenha) => setSenha(userSenha)}
+            <FormInput
+                labelValue={password}
+                onChangeText={(userPassword) => setPassword(userPassword)}
                 placeholderText="Senha"
                 secureTextEntry={true}
             />
 
-            <FormInput 
-                labelValue={senha}
-                onChangeText={(userSenha) => setSenha(userSenha)}
+            <FormInput
+                labelValue={password}
+                onChangeText={(userPassword) => setPassword(userPassword)}
                 placeholderText="Confirme sua senha"
                 secureTextEntry={true}
             />
 
-            <FormButton 
+            <FormButton
                 buttonTitle="Criar Conta"
-                onPress={() => alert('Botão criar conta foi clicado!')}
+                onPress={() => createUser()}
+            // onPress={() => alert('Botão criar conta foi clicado!')}
             />
 
 
-            <SocialButton 
+            <SocialButton
                 buttonTitle="Entrar com o Google"
                 btnType="google"
                 color="#de4d41"
                 backgroundColor="#f5e7ea"
-                onPress={()=>{}}    
+                onPress={() => { }}
             />
-            
+
             <View style={styles.textPrivate}>
                 <Text style={styles.colorTextPrivate}>Criando uma conta você concorda com nossos</Text>
-                <TouchableOpacity onPress={()=>alert('Termos de serviço clicado!')}>
-                    <Text style={[styles.colorTextPrivate, {color: '#e88832'}]}>Termos de serviço </Text>
+                <TouchableOpacity onPress={() => alert('Termos de serviço clicado!')}>
+                    <Text style={[styles.colorTextPrivate, { color: '#e88832' }]}>Termos de serviço </Text>
                 </TouchableOpacity>
                 <Text style={styles.colorTextPrivate}>e </Text>
-                <TouchableOpacity onPress={()=>alert('Política de privacidade clicada!')}>
-                    <Text style={[styles.colorTextPrivate, {color: '#e88832'}]}>Política de Privacidade</Text>
+                <TouchableOpacity onPress={() => alert('Política de privacidade clicada!')}>
+                    <Text style={[styles.colorTextPrivate, { color: '#e88832' }]}>Política de Privacidade</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -68,7 +80,7 @@ export default function SignupScreen () {
 }
 
 const styles = StyleSheet.create({
-    container: {    
+    container: {
         backgroundColor: '#f9faf9',
         flex: 1,
         justifyContent: 'center',
@@ -108,5 +120,5 @@ const styles = StyleSheet.create({
         color: 'grey'
     }
 
-    
+
 });

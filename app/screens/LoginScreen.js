@@ -4,23 +4,34 @@ import { useState } from 'react';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-import  SocialButton  from '../components/SocialButton'
+import SocialButton from '../components/SocialButton';
 
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-export default function LoginScreen ({ navigation }) {
+import { auth } from "../config/firebase";
+
+export default function LoginScreen({ navigation }) {
 
     const [email, setEmail] = useState();
-    const [senha, setSenha] = useState();
+    const [password, setPassword] = useState();
 
-    return(
+    async function login() {
+        await signInWithEmailAndPassword(auth, email, password)
+            .then(value => {
+                console.log('logado com sucesso!');
+            })
+            .catch(error => console.log(error));
+    }
+
+    return (
         <View style={styles.container}>
-            <Image 
+            <Image
                 source={require('../../assets/Logo-KILO.png')}
                 style={styles.logo}
             />
             <Text style={styles.text}>KILO APP</Text>
 
-            <FormInput 
+            <FormInput
                 labelValue={email}
                 onChangeText={(userEmail) => setEmail(userEmail)}
                 placeholderText="Email"
@@ -29,41 +40,42 @@ export default function LoginScreen ({ navigation }) {
                 autoCorrect={false}
             />
 
-            <FormInput 
-                labelValue={senha}
-                onChangeText={(userSenha) => setSenha(userSenha)}
+            <FormInput
+                labelValue={password}
+                onChangeText={(userPassword) => setPassword(userPassword)}
                 placeholderText="Senha"
                 secureTextEntry={true}
             />
 
-            <FormButton 
+            <FormButton
                 buttonTitle="Entrar"
-                onPress={() => alert('Botão Entrar foi clicado!')}
+                onPress={() => login()}
+            // onPress={() => alert('Botão Entrar foi clicado!')}
             />
 
-            <TouchableOpacity 
-                style={styles.forgotButton} 
-                nPress={() => alert('Leva para a tela de recuperação de senha.')}>
-                <Text 
+            <TouchableOpacity
+                style={styles.forgotButton}
+                onPress={() => alert('Leva para a tela de recuperação de senha.')}>
+                <Text
                     style={styles.navButtonText}>
-                        Esqueceu a Senha?
+                    Esqueceu a Senha?
                 </Text>
             </TouchableOpacity>
 
-            <SocialButton 
+            <SocialButton
                 buttonTitle="Entrar com o Google"
                 btnType="google"
                 color="#de4d41"
                 backgroundColor="#f5e7ea"
-                onPress={()=>{}}    
+                onPress={() => { }}
             />
 
-            <TouchableOpacity 
-                style={styles.forgotButton} 
+            <TouchableOpacity
+                style={styles.forgotButton}
                 onPress={() => navigation.navigate("signup")}>
-                <Text 
+                <Text
                     style={styles.navButtonText}>
-                        Ainda não tem uma conta?
+                    Ainda não tem uma conta?
                 </Text>
             </TouchableOpacity>
         </View>
@@ -71,7 +83,7 @@ export default function LoginScreen ({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {    
+    container: {
         backgroundColor: '#f9faf9',
         flex: 1,
         justifyContent: 'center',
@@ -107,5 +119,5 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato-Regular'
     }
 
-    
+
 });
