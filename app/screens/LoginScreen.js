@@ -6,7 +6,7 @@ import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton';
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 import { auth } from "../config/firebase";
 
@@ -15,12 +15,36 @@ export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
+    const provider = new GoogleAuthProvider();
+
     async function login() {
         await signInWithEmailAndPassword(auth, email, password)
             .then(value => {
                 console.log('logado com sucesso!');
             })
             .catch(error => console.log(error));
+    }
+
+    async function loginGoogle() {
+        await signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                // ...
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+            });
     }
 
     return (
@@ -67,7 +91,7 @@ export default function LoginScreen({ navigation }) {
                 btnType="google"
                 color="#de4d41"
                 backgroundColor="#f5e7ea"
-                onPress={() => { }}
+                onPress={() => loginGoogle()}
             />
 
             <TouchableOpacity

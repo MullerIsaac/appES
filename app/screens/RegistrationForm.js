@@ -13,7 +13,7 @@ import { useState } from 'react/cjs/react.production.min';
 export default function RegistrationForm() {
   const [userName, setUserName] = useState();
   const [email, setEmail] = useState();
-  const [senha, setSenha] = useState();
+  const [password, setPassword] = useState();
   const [isRegistrationSucess, setIsRegistrationSucess] = useState();
 
   return (
