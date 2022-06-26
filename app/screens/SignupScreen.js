@@ -5,7 +5,7 @@ import { useState } from 'react';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import SocialButton from '../components/SocialButton'
-import { collection} from "firebase/firestore"
+import { addDoc, collection, doc, setDoc} from "firebase/firestore"
 import { createUserWithEmailAndPassword} from 'firebase/auth';
 import { auth, db } from "../config/firebase";
 
@@ -17,10 +17,10 @@ export default function SignupScreen() {
     async function createUser() {
         await createUserWithEmailAndPassword(auth, email, password)
         .then(value => {
-            collection(db, "usuarios").doc(value.user.uid).set({
+            setDoc(doc(db, "usuarios/", value.user.uid), {
                 email: email,
-                senha: password
-            })
+                senha: password,
+            });
             console.log('cadastrado com sucesso! \n' + value.user.uid);
         })
         .catch(error => console.log(error));
