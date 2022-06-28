@@ -102,6 +102,7 @@ export default function LoginScreen({ navigation }) {
                     Ainda não tem uma conta?
                 </Text>
             </TouchableOpacity>
+
         </View>
     );
 }
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
 
     forgotButton: {
         marginVertical: 35
+        
     },
 
     navButtonText: {
