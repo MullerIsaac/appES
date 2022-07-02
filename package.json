@@ -10,12 +10,11 @@
     "eject": "expo eject"
   },
   "dependencies": {
-<<<<<<< Updated upstream
     "@react-native-firebase/app": "^15.0.0",
     "@react-native-firebase/firestore": "^15.0.0",
-=======
+
     "@react-navigation/bottom-tabs": "^6.3.1",
->>>>>>> Stashed changes
+
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
     "expo": "~45.0.0",
